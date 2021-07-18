@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+
+    <div class="d-flex justify-content-center   container " th:each="article : ${articles}" th:object="${article}">
+        <div class="card mt-4" style="width: 38rem;">
+
+            <img th:src="@{articles/image(pid=${article.pid})}" class="card-img-top" alt="...">
+
+            <div class="card-body">
+                <h5 class="mt-4 card-title" th:text="*{name}"></h5>
+                <div>
+                    <span>Автор</span>
+                    <td th:text="*{authUser}"></td>
+
+                    <span class="likebtn-wrapper" data-theme="line" data-identifier="item_1"></span>
+
+
+                </div>
+                <p class="card-text" th:text="*{text}"></p>
+                <a th:href="@{articles/edit/(pid=*{pid})}" class="btn btn-secondary editArticle">Редактировать</a>
+                <a th:href="@{articles/delete/(pid=*{pid})}" class="btn btn-secondary deleteBtn">Удалить</a>
+            </div>
+        </div>
+    </div>
+
+
+</html>

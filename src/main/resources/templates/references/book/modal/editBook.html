@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Редактирование</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form th:action="@{references/books/updateBook}" method="put" th:object="${book}" id="edit_book">
+                <input type="hidden" name="pid" th:field="*{pid}" id="edit-book-id">
+                <div class="mb-1 w-25 h-25">
+                    <img class="card-img" th:src="@{references/books/image(pid=${book.pid})}" />
+                </div>
+                <div class="mb-1">
+                    <label for="edit-book-name" class="col-form-label">Name:</label>
+                    <input type="text" class="form-control" th:field="*{name}" id="edit-book-name" name="name">
+                </div>
+
+
+                <div class="modal-footer" style="border: none">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{close}">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary" th:text="#{save}">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

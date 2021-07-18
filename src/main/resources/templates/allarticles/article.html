@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="fragments/header :: head(~{::script}, ~{})">
+    <script type="text/javascript" th:src="@{js/allarticle.js}"></script>
+</div>
+<header>
+    <div th:replace="fragments/nav-bar :: nav_bar"></div>
+</header>
+<main class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 mt-3 mb-5">
+            <div th:replace="allarticles/actionBar"></div>
+            <div class="article_list" th:fragment="article_list">
+
+                <div th:replace="fragments/alert"></div>
+                <div th:replace="allarticles/articleTable"></div>
+
+            </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:include="fragments/footer :: footer"></footer>
+</html>
