@@ -17,9 +17,9 @@ public class Article {
     @Column(nullable = false, length = 2000)
     private String text;
 
-    //        @ManyToOne(fetch = FetchType.LAZY)
-//        @JoinColumn(name = "user_name", referencedColumnName = "firstName")
-//        private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_name", referencedColumnName = "pid")
+    private User user;
 
     @Column(nullable = false, length = 100)
     private String authUser;
@@ -70,5 +70,11 @@ public class Article {
         this.text = text;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

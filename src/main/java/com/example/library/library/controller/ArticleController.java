@@ -1,7 +1,10 @@
 package com.example.library.library.controller;
 
 import com.example.library.library.model.Article;
+import com.example.library.library.model.User;
 import com.example.library.library.service.ArticleService;
+import com.example.library.library.service.UserService;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/articles")
@@ -22,6 +27,9 @@ public class ArticleController {
 
     @Autowired
     ArticleService articleService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/addArticle")
     public String addUser(Model model) {
@@ -36,11 +44,17 @@ public class ArticleController {
     }
 
     @PostMapping(value ="/saveArticle", consumes = {"multipart/form-data"})
-    public String saveArticle(Article article, Model model, @RequestParam("maintenanceFile") MultipartFile maintenanceFile) {
+    public String saveArticle(Article article, Model model, HttpServletRequest request, @RequestParam("maintenanceFile") MultipartFile maintenanceFile) {
 //***********************************************************
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String authUser = auth.getName();
-        article.setAuthUser(authUser);
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        String authUser = auth.getName();
+//        article.setAuthUser(authUser);
+
+        String userName = request.getRemoteUser();
+        Optional<User> optional = userService.getUserByLogin(userName);
+        User user = optional.orElseThrow(()-> new ServiceException("Warning"));
+        article.setUser(user);
+////////////////////////////////////////////////
    //******************************************************
         try {
 
@@ -48,12 +62,12 @@ public class ArticleController {
 
 
             articleService.createNewArticle(article, maintenanceFile);
-            model.addAttribute("articles", articleService.getMyArticles(authUser));
+            model.addAttribute("articles", articleService.getMyArticles(userName));
             model.addAttribute("message", "Статья успешно добавлена");
             model.addAttribute("alertClass", "alert-success");
             return "articles/article :: article_list";
         } catch (Exception e) {
-            model.addAttribute("articles", articleService.getMyArticles(authUser));
+            model.addAttribute("articles", articleService.getMyArticles(userName));
             model.addAttribute("message", "Ошибка добавления статьи");
             model.addAttribute("alertClass", "alert-danger");
             return "articles/article :: article_list";
