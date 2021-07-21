@@ -31,6 +31,7 @@ public class SecurityUser implements UserDetails {
 
     public String getPassword() {
         return password;
+///////////////////////////////////
     }
 
     @Override
