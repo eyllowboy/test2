@@ -36,6 +36,17 @@ public class User {
     @Column(nullable = false, columnDefinition = "varchar(20) default 'ACTIVE'")
     private Status status;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Article> articles;
+
+    public List<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
+    }
+
     public Long getPid() {
         return pid;
     }

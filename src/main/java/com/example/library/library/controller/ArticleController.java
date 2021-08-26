@@ -35,7 +35,7 @@ public class ArticleController {
     UserService userService;
 
     @GetMapping("/addArticle")
-    public String addArticle(Model model) {
+    public String addUser(Model model) {
         try {
             model.addAttribute("article", new Article());
 
@@ -67,6 +67,10 @@ public class ArticleController {
         article.setDataArticle(articleDate);
    //******************************************************
         try {
+
+
+
+
             articleService.createNewArticle(article, maintenanceFile);
             model.addAttribute("articles", articleService.getMyArticles(userName));
             model.addAttribute("message", "Статья успешно добавлена");
@@ -128,7 +132,7 @@ public class ArticleController {
 //    public String updateArticle(Article article, Model model,  @RequestParam("maintenanceFile") MultipartFile maintenanceFile) {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        String authUser = auth.getName();
-//        article.setUser(authUser);
+//        article.setAuthUser(authUser);
 //        try {
 //            articleService.updateArticle(article, maintenanceFile);
 //            model.addAttribute("articles", articleService.getMyArticles(authUser));

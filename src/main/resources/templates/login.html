@@ -8,8 +8,8 @@
 <main class="form-signin">
     <form method="post" action="/auth/login">
         <img class="mb-4" th:src="@{/img/logo.png}" alt="" width="258" height="228">
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
+        <h1 class="h3 mb-3 fw-normal">Войдите</h1>
+        <div th:replace="fragments/alert"></div>
         <div class="form-floating">
             <input type="text" name="username" class="form-control" id="floatingInput">
             <label for="floatingInput">Login</label>
@@ -25,10 +25,14 @@
             </label>
         </div>
 
-        <div th:replace="fragments/alert"></div>
+
         <button class="w-100 btn btn-lg btn-secondary" type="submit">Вход</button>
+        <a th:href="@{registration}" class="mt-2 w-100 btn btn-secondary h-15" id="Btn">
+            Зарегистрироваться
+        </a>
         <p class="mt-5 mb-3 text-muted">© 2017–2021</p>
     </form>
+
 </main>
 
 </body>

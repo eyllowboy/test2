@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.css}">
+    <link th:rel="stylesheet" th:href="@{/css/general.css}">
+    <script type="text/javascript"
+            th:src="@{/bootstrap/js/bootstrap.js}"></script>
+    <script type="text/javascript"
+            th:src="@{/js/general.js}"></script>
+    <title>Title</title>
+</head>
+<body>
+    <div class="container d-flex justify-content-center h2 mt-4 ">Введите свои данные</div>
+        <div class="container w-25 mt-4">
+            <form th:action="@{/auth/saveUser}" th:object="${user}" method="post" id="add_user" >
+                <div class="mb-3">
+                    <label for="lastName" class="col-form-label">Фамилия:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="firstName" class="col-form-label">Имя:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="middleName" class="col-form-label">Отчество:</label>
+                    <input type="text" class="form-control" id="middleName" name="middleName">
+                </div>
+                <div class="mb-3">
+                    <label for="login" class="col-form-label">Логин:</label>
+                    <input type="text" class="form-control" id="login" name="login" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="col-form-label">Пароль:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+
+                <div class="modal-footer">
+                    <a th:href="@{/auth/login}" class="mt-2 w-25 btn btn-secondary" id="Btn">
+                        Отмена
+                    </a>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+<!--                <input type="hidden" name="role" th:field="USER" id="role">-->
+
+            </form>
+        </div>
+
+</body>
+</html>
