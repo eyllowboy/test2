@@ -18,6 +18,7 @@ public class UserController {
     private static final String ERROR_ALERT = "fragments/alert :: alert";
     private static final String EDIT_MODAL = "users/modal/editUser";
     private static final String ADD_MODAL = "users/modal/addUser";
+    private static final String USER_INFO = "users/modal/infoUser";
 
     UserService userService;
 
@@ -93,6 +94,20 @@ public class UserController {
             model.addAttribute("message", "Ошибка редактирования пользователя");
             model.addAttribute("alertClass", "alert-danger");
             return USER_TABLE;
+        }
+    }
+    @GetMapping(value = "/info")
+    public String infoUser(Long pid, Model model) {
+        try {
+
+            model.addAttribute("user", userService.getUserById(pid));
+
+
+            return USER_INFO;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+
+            return USER_INFO;
         }
     }
 

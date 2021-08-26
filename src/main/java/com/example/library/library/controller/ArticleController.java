@@ -59,7 +59,7 @@ public class ArticleController {
 
         String userName = request.getRemoteUser();
         Optional<User> optional = userService.getUserByLogin(userName);
-        User user = optional.orElseThrow(()-> new ServiceException("Warning"));
+        User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
         article.setUser(user);
         System.out.println(user.getLogin());
 
@@ -128,22 +128,24 @@ public class ArticleController {
     }
 
 
-//    @PostMapping(value ="/updateArticle", consumes = {"multipart/form-data"})
-//    public String updateArticle(Article article, Model model,  @RequestParam("maintenanceFile") MultipartFile maintenanceFile) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String authUser = auth.getName();
-//        article.setAuthUser(authUser);
-//        try {
-//            articleService.updateArticle(article, maintenanceFile);
-//            model.addAttribute("articles", articleService.getMyArticles(authUser));
-//            model.addAttribute("message", "Статья успешно добавлена");
-//            model.addAttribute("alertClass", "alert-success");
-//            return "articles/article :: article_list";
-//        } catch (Exception e) {
-//            model.addAttribute("articles", articleService.getMyArticles(authUser));
-//            model.addAttribute("message", "Ошибка добавления статьи");
-//            model.addAttribute("alertClass", "alert-danger");
-//            return "articles/article :: article_list";
-//        }
-//    }
+    @PostMapping(value ="/updateArticle", consumes = {"multipart/form-data"})
+    public String updateArticle(Article article, Model model, HttpServletRequest request, @RequestParam("maintenanceFile") MultipartFile maintenanceFile) {
+        String userName = request.getRemoteUser();
+        Optional<User> optional = userService.getUserByLogin(userName);
+        User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
+        article.setUser(user);
+        System.out.println(user.getLogin());
+        try {
+            articleService.updateArticle(article, maintenanceFile);
+            model.addAttribute("articles", articleService.getMyArticles(userName));
+            model.addAttribute("message", "Статья успешно редактирована");
+            model.addAttribute("alertClass", "alert-success");
+            return "articles/article :: article_list";
+        } catch (Exception e) {
+            model.addAttribute("articles", articleService.getMyArticles(userName));
+            model.addAttribute("message", "Ошибка редактирования статьи");
+            model.addAttribute("alertClass", "alert-danger");
+            return "articles/article :: article_list";
+        }
+    }
 }

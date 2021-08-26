@@ -1,8 +1,13 @@
 package com.example.library.library.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Article {
@@ -17,20 +22,25 @@ public class Article {
     @Column(nullable = false, length = 2000)
     private String text;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "dataArticle")
+    private LocalDate dataArticle;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_name", referencedColumnName = "pid")
     private User user;
 
-    @Column(nullable = false, length = 100)
-    private String authUser;
-
-    public String getAuthUser() {
-        return authUser;
-    }
-
-    public void setAuthUser(String authUser) {
-        this.authUser = authUser;
-    }
+//    @Column(length = 100)
+//    private String authUser;
+//
+//    public String getAuthUser() {
+//        return authUser;
+//    }
+//
+//    public void setAuthUser(String authUser) {
+//        this.authUser = authUser;
+//    }
 
     @Lob
     private byte[] cover;
@@ -76,5 +86,18 @@ public class Article {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Transient
+    public String getAuthorStr() {
+        return user.getLogin();
+    }
+
+    public LocalDate getDataArticle() {
+        return dataArticle;
+    }
+
+    public void setDataArticle(LocalDate dataArticle) {
+        this.dataArticle = dataArticle;
     }
 }

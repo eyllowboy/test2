@@ -12,7 +12,10 @@
             <div class="card-body">
                <div>
                    <span>Автор</span>
-                   <span th:text="*{authUser}"></span>
+                   <span th:text="*{authorStr}"></span>
+                   <div> <span>Дата создания</span>
+                       <td th:text="*{dataArticle}"></td>
+                   </div>
                </div>
                 <h5 class=" mt-4 card-title" th:text="*{name}"></h5>
 

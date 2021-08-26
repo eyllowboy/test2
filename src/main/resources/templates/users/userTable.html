@@ -26,10 +26,13 @@
         <td th:text="*{status}"></td>
         <td>
             <a th:href="@{users/edit/(pid=*{pid})}" class="btn btn-warning editBtn">
-                Edit
+                Редактировать
             </a>
             <a th:href="@{users/delete/(pid=*{pid})}" class="btn btn-danger deleteBtn">
-                Delete
+                Удалить
+            </a>
+            <a th:href="@{users/info/(pid=*{pid})}" class="btn btn-success infoBtn">
+                Информация
             </a>
         </td>
     </tr>

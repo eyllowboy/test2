@@ -116,6 +116,7 @@ public class User {
         return roles.stream().map(Role::getName).collect(Collectors.joining(","));
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

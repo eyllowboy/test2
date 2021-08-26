@@ -9,6 +9,9 @@
         <div class="modal-body">
             <div class="custom-alert"></div>
             <form th:action="@{/articles/saveArticle}" th:object="${article}" method="post" id="add_article" >
+
+
+
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Обложка</label>
                     <input class="form-control" type="file" id="formFile" name="maintenanceFile">

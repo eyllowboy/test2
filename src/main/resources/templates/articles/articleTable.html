@@ -10,12 +10,15 @@
             <img th:src="@{articles/image(pid=${article.pid})}" class="card-img-top" alt="...">
 
             <div class="card-body">
-                <h5 class="mt-4 card-title" th:text="*{name}"></h5>
+
+
                 <div>
                     <span>Автор</span>
-                    <td th:text="*{authUser}"></td>
-
-                    <span class="likebtn-wrapper" data-theme="line" data-identifier="item_1"></span>
+                    <td th:text="*{authorStr}"></td>
+                    <div> <span>Дата создания</span>
+                    <td th:text="*{dataArticle}"></td>
+                        </div>
+                   <div <h5 class="mt-4 card-title" th:text="*{name}"></h5>></div>
 
 
                 </div>

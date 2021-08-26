@@ -10,6 +10,7 @@
         <div class="modal-body">
             <form th:action="@{/articles/updateArticle}" method="post" th:object="${article}" id="edit_article">
                 <input type="hidden" name="pid" th:field="*{pid}" id="edit-article-id">
+                <input type="hidden" name="dataArticle" th:field="*{dataArticle}" id="edit-dataArticle">
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Обложка</label>
                     <img th:src="@{articles/image(pid=${article.pid})}" class="card-img-top" alt="..." />

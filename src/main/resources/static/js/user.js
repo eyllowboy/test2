@@ -30,6 +30,13 @@ function addUserButton() {
     });
 }
 
+function infoEvent(el) {
+    el.addEventListener('click', function (event) {
+        event.preventDefault()
+        let href = this.getAttribute('href')
+        editAsyncFetch(href)
+    })
+}
 function editEvent(el) {
     el.addEventListener('click', function (event) {
         event.preventDefault()
@@ -62,6 +69,9 @@ function eventForUserPage() {
     document.querySelectorAll('.table .editBtn')
         .forEach(editBtn => editEvent(editBtn));
 
+    document.querySelectorAll('.table .infoBtn')
+        .forEach(infoBtn => infoEvent(infoBtn));
+
     document.querySelectorAll('.table tr')
         .forEach(tr => editEventRow(tr));
 
@@ -74,7 +84,8 @@ function eventForUserPage() {
             model.show();
             let delUser = document.getElementById('delUser');
             delUser.addEventListener('click', ev => deleteUser(ev))
-        }))
+        }));
+
 }
 
 async function deleteUser(event) {
