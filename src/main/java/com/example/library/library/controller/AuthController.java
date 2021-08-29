@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
@@ -44,6 +47,10 @@ public class AuthController {
     public String saveUser(User user, Model model) {
         Status status = Status.ACTIVE;
         user.setStatus(status);
+        LocalDate createdDate = LocalDate.now();
+        user.setDataCreated(createdDate);
+//        LocalDateTime dateVisited = LocalDateTime.now();
+//        user.setDataVisited(dateVisited);
         try {
             userService.createNewUser(user);
             model.addAttribute("users", userService.getAllUsers());

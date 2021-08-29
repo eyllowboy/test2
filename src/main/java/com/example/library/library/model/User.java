@@ -1,6 +1,10 @@
 package com.example.library.library.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +42,30 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Article> articles;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Column(name = "dataCreated")
+    private LocalDate dataCreated;
+
+    @DateTimeFormat (pattern = ("yyyy-MM-dd HH:mm"))
+    @Column(name = "dataVisited")
+    private LocalDateTime dataVisited;
+
+    public LocalDateTime getDataVisited() {
+        return dataVisited;
+    }
+
+    public void setDataVisited(LocalDateTime dataVisited) {
+        this.dataVisited = dataVisited;
+    }
+
+    public LocalDate getDataCreated() {
+        return dataCreated;
+    }
+
+    public void setDataCreated(LocalDate dataCreated) {
+        this.dataCreated = dataCreated;
+    }
 
     public List<Article> getArticles() {
         return articles;

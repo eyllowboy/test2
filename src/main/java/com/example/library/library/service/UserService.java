@@ -16,6 +16,9 @@ public interface UserService {
 
     User updateUser(User user);
 
+    User updateVisitedUser(User user);
+
+
     User getUserById(Long pid);
 
     Optional<User> getUserByLogin(String login);

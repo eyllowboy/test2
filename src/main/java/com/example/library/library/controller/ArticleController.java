@@ -63,8 +63,7 @@ public class ArticleController {
         article.setUser(user);
         System.out.println(user.getLogin());
 
-        LocalDate articleDate = LocalDate.now();
-        article.setDataArticle(articleDate);
+
    //******************************************************
         try {
 

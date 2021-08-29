@@ -1,8 +1,10 @@
 package com.example.library.library.controller;
 
+import com.example.library.library.model.User;
 import com.example.library.library.service.ArticleService;
 import com.example.library.library.service.BookService;
 import com.example.library.library.service.UserService;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,6 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 public class NavigationController {
@@ -29,7 +36,17 @@ public class NavigationController {
 
     @RequestMapping(value = {"/", "/users"}, method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public String users(Model model) {
+    public String users(Model model, HttpServletRequest request) {
+        String userName = request.getRemoteUser();
+        Optional<User> optional = userService.getUserByLogin(userName);
+        User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
+
+
+        LocalDateTime dateVisited = LocalDateTime.now();
+        user.setDataVisited(dateVisited);
+        System.out.println("????????????????????????????????????????????");
+        System.out.println(userName);
+        userService.updateVisitedUser(user);
         model.addAttribute("users", userService.getAllUsers());
         return "users/user";
     }
