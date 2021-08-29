@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Optional;
@@ -61,7 +62,8 @@ public class ArticleController {
         Optional<User> optional = userService.getUserByLogin(userName);
         User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
         article.setUser(user);
-        System.out.println(user.getLogin());
+        LocalDate dateCreated = LocalDate.now();
+        article.setDataArticle(dateCreated);
 
 
    //******************************************************
