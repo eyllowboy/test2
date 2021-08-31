@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -49,13 +50,6 @@ public class ArticleController {
 
     @PostMapping(value ="/saveArticle", consumes = {"multipart/form-data"})
     public String saveArticle(Article article, Model model, HttpServletRequest request, @RequestParam("maintenanceFile") MultipartFile maintenanceFile) {
-//***********************************************************
-
-
- //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        String authUser = auth.getName();
-//        article.setAuthUser(authUser);
-
 
 
         String userName = request.getRemoteUser();
@@ -65,8 +59,7 @@ public class ArticleController {
         LocalDate dateCreated = LocalDate.now();
         article.setDataArticle(dateCreated);
 
-
-   //******************************************************
+        //******************************************************
         try {
 
 

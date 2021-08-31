@@ -1,8 +1,10 @@
 package com.example.library.library.controller;
 
 import com.example.library.library.model.User;
+import com.example.library.library.service.ArticleService;
 import com.example.library.library.service.UserService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,10 @@ public class UserController {
     private static final String EDIT_MODAL = "users/modal/editUser";
     private static final String ADD_MODAL = "users/modal/addUser";
     private static final String USER_INFO = "users/modal/infoUser";
+
+    @Autowired
+    ArticleService articleService;
+
 
     UserService userService;
 
@@ -101,6 +107,7 @@ public class UserController {
         try {
 
             model.addAttribute("user", userService.getUserById(pid));
+            model.addAttribute("countArticles", articleService.summaArticles(pid).size());
 
 
             return USER_INFO;

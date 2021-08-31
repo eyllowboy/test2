@@ -51,6 +51,8 @@ public class User {
     @Column(name = "dataVisited")
     private LocalDateTime dataVisited;
 
+
+
     public LocalDateTime getDataVisited() {
         return dataVisited;
     }

@@ -66,4 +66,9 @@ public class ArticleServiceImpl  implements ArticleService {
         }
         return articleRepository.save(article);
     }
+
+    @Override
+    public List<Article> summaArticles(Long pid) {
+        return articleRepository.summaArticles(pid);
+    }
 }

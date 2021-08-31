@@ -7,23 +7,30 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form th:action="@{/users/updateUser}" th:object="${user}" method="post" id="edit_user" >
+            <div>
 
-                <div><span>Логин</span></div>
+                <div class="text-info"><span>Логин:</span></div>
 
 
-                <td th:text="*{login}"> </td>
-                <div><span>Дата регистрации</span></div>
-                <td th:text="*{dataCreated}"> </td>
-                <div><span>Последняя дата посещения</span></div>
-                <td th:text="*{dataVisited}"> </td>
-
+                <div>
+                    <td th:text="*{user.login}"> </td>
+                    <div class="text-info">Дата регистрации:</div>
+                    <td th:text="*{user.dataCreated}"> </td>
+                </div>
+                <div>
+                    <div class="text-info">Последняя дата посещения:</div>
+                    <td th:text="*{user.dataVisited}"> </td>
+                </div>
+                <div>
+                    <div class="text-info">Количество статей пользователя:</div>
+                    <td th:text="${countArticles}"> </td>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                     </button>
 
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

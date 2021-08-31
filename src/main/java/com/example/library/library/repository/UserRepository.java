@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long>, UserRepositor
 
     @Query("select r from Role r")
     List<Role> getAllRolesForUser();
+
+
 }

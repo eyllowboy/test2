@@ -16,7 +16,7 @@ public interface UserService {
 
     User updateUser(User user);
 
-    User updateVisitedUser(User user);
+    User updateParametredUser(User user);
 
 
     User getUserById(Long pid);
@@ -26,5 +26,7 @@ public interface UserService {
     void deleteUserById(Long pid);
     
     List<User> filterUser(String filterText);
+
+
 
 }

@@ -18,4 +18,6 @@ public interface ArticleService {
     Article updateArticle(Article article, MultipartFile maintenanceFile);
 
     List<Article> getMyArticles(String Auth);
+
+    List<Article> summaArticles(Long pid);
 }

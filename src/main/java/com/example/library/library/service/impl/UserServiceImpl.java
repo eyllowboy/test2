@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     @Transactional
-    public User updateVisitedUser(User user) {
+    public User updateParametredUser(User user) {
 
         return userRepository.save(user);
     }
@@ -82,4 +82,6 @@ public class UserServiceImpl implements UserService {
     public List<User> filterUser(String filterText) {
         return userRepository.filterUser(filterText);
     }
+
+
 }
