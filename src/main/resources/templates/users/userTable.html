@@ -25,14 +25,17 @@
         <td th:text="*{rolesStr}"></td>
         <td th:text="*{status}"></td>
         <td>
-            <a th:href="@{users/edit/(pid=*{pid})}" class="btn btn-warning editBtn">
+            <a th:href="@{users/edit/(pid=*{pid})}" class="btn btn-outline-warning editBtn">
                 Редактировать
             </a>
-            <a th:href="@{users/delete/(pid=*{pid})}" class="btn btn-danger deleteBtn">
+            <a th:href="@{users/delete/(pid=*{pid})}" class="btn btn-outline-danger deleteBtn">
                 Удалить
             </a>
-            <a th:href="@{users/info/(pid=*{pid})}" class="btn btn-success infoBtn">
+            <a th:href="@{users/info/(pid=*{pid})}" class="btn btn-outline-success infoBtn">
                 Информация
+            </a>
+            <a th:href="@{users/message/(pid=*{pid})}" class="btn btn-outline-secondary messageBtn">
+                Написать сообщение
             </a>
         </td>
     </tr>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<table class="table" >
+    <thead class="table-secondary">
+    <tr>
+        <th scope="col">Тема сообщения</th>
+        <th scope="col">Дата отправки</th>
+        <th scope="col">От кого</th>
+        <th scope="col">Действия</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="message : ${messages}" th:object="${message}">
+        <td style="display: none">
+            <div id="pid" th:text="*{pid}"></div>
+        </td>
+        <td th:text="*{themeMessage}"></td>
+        <td th:text="*{dataMessage}"></td>
+        <td th:text="*{fromUser}"></td>
+
+        <td>
+            <a th:href="@{messages/openModal/(pid=*{pid})}" class="btn btn-outline-warning openBtn">
+                Посмотреть
+            </a>
+            <a th:href="@{messages/delete/(pid=*{pid})}" class="btn btn-outline-danger deleteBtn">
+                Удалить
+            </a>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+</html>

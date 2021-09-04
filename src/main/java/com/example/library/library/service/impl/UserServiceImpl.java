@@ -5,7 +5,7 @@ import com.example.library.library.model.User;
 import com.example.library.library.repository.UserRepository;
 import com.example.library.library.service.UserService;
 import org.hibernate.Hibernate;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

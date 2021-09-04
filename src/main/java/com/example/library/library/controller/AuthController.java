@@ -4,7 +4,7 @@ import com.example.library.library.model.Article;
 import com.example.library.library.model.Status;
 import com.example.library.library.model.User;
 import com.example.library.library.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

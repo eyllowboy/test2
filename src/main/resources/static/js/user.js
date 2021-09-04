@@ -37,6 +37,14 @@ function infoEvent(el) {
         editAsyncFetch(href)
     })
 }
+function messageEvent(el) {
+    el.addEventListener('click', function (event) {
+        event.preventDefault()
+        let href = this.getAttribute('href')
+        messageAsyncFetch(href)
+    })
+}
+
 function editEvent(el) {
     el.addEventListener('click', function (event) {
         event.preventDefault()
@@ -64,6 +72,16 @@ function editAsyncFetch(href) {
             .addEventListener('submit', event => submitEditUserForm(event))
     });
 }
+function messageAsyncFetch(href) {
+    fetch(href).then(response => response.text()).then(fragment => {
+        document.querySelector("#messageModal").innerHTML = fragment;
+    }).then(() => {
+        let model = new bootstrap.Modal(document.getElementById('messageModal'), {});
+        model.show();
+        document.getElementById("message_user")
+            .addEventListener('submit', event => submitMessageUserForm(event))
+    });
+}
 
 function eventForUserPage() {
     document.querySelectorAll('.table .editBtn')
@@ -71,6 +89,9 @@ function eventForUserPage() {
 
     document.querySelectorAll('.table .infoBtn')
         .forEach(infoBtn => infoEvent(infoBtn));
+
+    document.querySelectorAll('.table .messageBtn')
+        .forEach(messageBtn => messageEvent(messageBtn));
 
     document.querySelectorAll('.table tr')
         .forEach(tr => editEventRow(tr));
@@ -85,6 +106,8 @@ function eventForUserPage() {
             let delUser = document.getElementById('delUser');
             delUser.addEventListener('click', ev => deleteUser(ev))
         }));
+
+
 
 }
 
@@ -143,6 +166,22 @@ async function submitEditUserForm(event) {
     console.dir(userTable)
 
     let modal = bootstrap.Modal.getInstance(document.getElementById('editModal'))
+    modal.hide();
+    document.querySelector(".user_list").innerHTML = userTable;
+    eventForUserPage();
+}
+async function submitMessageUserForm(event) {
+    event.preventDefault();
+    let formData = new FormData(event.target),
+        request = new Request(event.target.action, {
+            method: 'POST',
+            body: formData
+        });
+    let response = await fetch(request);
+    let userTable = await response.text();
+    console.dir(userTable)
+
+    let modal = bootstrap.Modal.getInstance(document.getElementById('messageModal'))
     modal.hide();
     document.querySelector(".user_list").innerHTML = userTable;
     eventForUserPage();

@@ -43,6 +43,10 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Article> articles;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Message> messages;
+
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Column(name = "dataCreated")
     private LocalDate dataCreated;

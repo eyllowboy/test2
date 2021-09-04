@@ -1,16 +1,22 @@
 package com.example.library.library.controller;
 
+import com.example.library.library.model.Message;
 import com.example.library.library.model.User;
 import com.example.library.library.service.ArticleService;
+import com.example.library.library.service.MessageService;
 import com.example.library.library.service.UserService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.service.spi.ServiceException;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
@@ -21,13 +27,16 @@ public class UserController {
     private static final String EDIT_MODAL = "users/modal/editUser";
     private static final String ADD_MODAL = "users/modal/addUser";
     private static final String USER_INFO = "users/modal/infoUser";
+    private static final String MESSAGE_USER = "users/modal/messageUser";
 
     @Autowired
     ArticleService articleService;
 
-
+    @Autowired
     UserService userService;
 
+    @Autowired
+    MessageService messageService;
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -86,7 +95,20 @@ public class UserController {
             return EDIT_MODAL;
         }
     }
+    @GetMapping("/message")
+    public String messageUser(Long pid, Model model) {
 
+        try {
+            User user = userService.getUserById(pid);
+
+            model.addAttribute("user", user);
+
+            return MESSAGE_USER;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return MESSAGE_USER;
+        }
+    }
     @PostMapping("/updateUser")
     public String updateUser(User user, Model model) {
         try {
@@ -117,7 +139,21 @@ public class UserController {
             return USER_INFO;
         }
     }
-
+//    @GetMapping(value = "/message")
+//    public String messageUser(Long pid, Model model) {
+//        try {
+//
+//            model.addAttribute("user", userService.getUserById(pid));
+//            model.addAttribute("countArticles", articleService.summaArticles(pid).size());
+//
+//
+//            return MESSAGE_USER;
+//        } catch (Exception e) {
+//            System.err.println(e.getMessage());
+//
+//            return MESSAGE_USER;
+//        }
+//    }
     @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
     public String deleteUser(Long pid, Model model) {
         try {
@@ -148,6 +184,31 @@ public class UserController {
         } catch (Exception e) {
             model.addAttribute("users", userService.getAllUsers());
             model.addAttribute("message", "При работе с пользователями произошла ошибка");
+            model.addAttribute("alertClass", "alert-danger");
+            return USER_TABLE;
+        }
+    }
+    @PostMapping("/saveMessage")
+    public String saveMessage(@RequestParam(value="pid") Long pid,
+                              Message message, HttpServletRequest request, Model model) {
+        try {
+            String userName = request.getRemoteUser();
+            Optional<User> optional = userService.getUserByLogin(userName);
+            User fromUser = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
+           message.setFromUser(fromUser.getLogin());
+
+            User user = userService.getUserById(pid);
+            message.setUser(user);
+            LocalDateTime dataMessage = LocalDateTime.now();
+            message.setDataMessage(dataMessage);
+            messageService.createNewMessage(message);
+            model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("message", "Сообщение успешно отправлено");
+            model.addAttribute("alertClass", "alert-success");
+            return USER_TABLE;
+        } catch (Exception e) {
+            model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("message", "Ошибка добавления сообщения");
             model.addAttribute("alertClass", "alert-danger");
             return USER_TABLE;
         }

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addModalLabel">Написать сообщение пользователю</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="custom-alert"></div>
+            <form th:action="@{/users/saveMessage}" th:object="${user}" method="post" id="message_user" >
+
+                <input type="hidden"  th:field="*{pid}" name="pid" id="edit_user_id">
+                <div class="mb-3">
+                    <label for="themeMessage" class="form-label">Тема письма</label>
+                    <input type="text" class="form-control" id="themeMessage" name="themeMessage" placeholder="Тема письма">
+                </div>
+                <div class="mb-3">
+                    <label for="textMessage" class="form-label">Текс письма</label>
+                    <textarea class="form-control" id="textMessage" name="textMessage" rows="7"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</html>

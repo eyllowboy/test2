@@ -9,20 +9,20 @@
         <div class="modal-body">
             <div>
 
-                <div class="text-info"><span>Логин:</span></div>
+                <div class="text-body"><span>Логин:</span></div>
 
 
                 <div>
                     <td th:text="*{user.login}"> </td>
-                    <div class="text-info">Дата регистрации:</div>
+                    <div class="text-body">Дата регистрации:</div>
                     <td th:text="*{user.dataCreated}"> </td>
                 </div>
                 <div>
-                    <div class="text-info">Последняя дата посещения:</div>
+                    <div class="text-body">Последняя дата посещения:</div>
                     <td th:text="*{user.dataVisited}"> </td>
                 </div>
                 <div>
-                    <div class="text-info">Количество статей пользователя:</div>
+                    <div class="text-body">Количество статей пользователя:</div>
                     <td th:text="${countArticles}"> </td>
                 </div>
                 <div class="modal-footer">

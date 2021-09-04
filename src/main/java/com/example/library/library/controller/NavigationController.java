@@ -1,9 +1,12 @@
 package com.example.library.library.controller;
 
+import com.example.library.library.model.Message;
 import com.example.library.library.model.User;
 import com.example.library.library.service.ArticleService;
 import com.example.library.library.service.BookService;
+import com.example.library.library.service.MessageService;
 import com.example.library.library.service.UserService;
+
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -28,10 +32,14 @@ public class NavigationController {
 
     private BookService bookService;
 
-    public NavigationController(UserService userService, BookService bookService, ArticleService articleService) {
+    private MessageService messageService;
+
+    public NavigationController(UserService userService, BookService bookService, ArticleService articleService,
+                                MessageService messageService) {
         this.userService = userService;
         this.bookService = bookService;
         this.articleService = articleService;
+        this.messageService = messageService;
     }
 
     @RequestMapping(value = {"/", "/users"}, method = RequestMethod.GET)
@@ -80,6 +88,8 @@ public class NavigationController {
 
         return "allarticles/article";
     }
+
+
 
     @GetMapping("/index")
     @PreAuthorize("hasAuthority('USER')")

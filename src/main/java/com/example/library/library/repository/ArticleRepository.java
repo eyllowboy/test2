@@ -9,8 +9,7 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-//    @Query("select a from Article a  where a.authUser = :auth")
-//    List<Article> findMyArticle(@Param("auth")String Auth);
+
 
     @Query("select a from Article a join fetch a.user where a.user.login = :auth")
     List<Article> findMyArticle(@Param("auth")String Auth);

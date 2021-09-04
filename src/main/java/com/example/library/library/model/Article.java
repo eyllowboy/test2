@@ -31,16 +31,6 @@ public class Article {
     @JoinColumn(name = "user_name", referencedColumnName = "pid")
     private User user;
 
-//    @Column(length = 100)
-//    private String authUser;
-//
-//    public String getAuthUser() {
-//        return authUser;
-//    }
-//
-//    public void setAuthUser(String authUser) {
-//        this.authUser = authUser;
-//    }
 
     @Lob
     private byte[] cover;

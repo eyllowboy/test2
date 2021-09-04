@@ -4,7 +4,7 @@ import com.example.library.library.model.Book;
 import com.example.library.library.repository.BookRepository;
 import com.example.library.library.service.BookService;
 import org.hibernate.service.spi.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
