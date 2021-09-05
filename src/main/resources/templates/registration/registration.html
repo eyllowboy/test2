@@ -34,14 +34,14 @@
                     <label for="password" class="col-form-label">Пароль:</label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
-
+                <input type="hidden" name="roles" value="USER"  id="edit-article-id">
                 <div class="modal-footer">
                     <a th:href="@{/auth/login}" class="mt-2 w-25 btn btn-secondary" id="Btn">
                         Отмена
                     </a>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </div>
-<!--                <input type="hidden" name="role" th:field="USER" id="role">-->
+
 
             </form>
         </div>

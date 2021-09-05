@@ -6,9 +6,9 @@
 <table class="table" >
     <thead class="table-secondary">
     <tr>
-        <th scope="col">Тема сообщения</th>
-        <th scope="col">Дата отправки</th>
         <th scope="col">От кого</th>
+        <th scope="col">Дата отправки</th>
+        <th scope="col">Тема сообщения</th>
         <th scope="col">Действия</th>
 
     </tr>
@@ -18,9 +18,9 @@
         <td style="display: none">
             <div id="pid" th:text="*{pid}"></div>
         </td>
-        <td th:text="*{themeMessage}"></td>
-        <td th:text="*{dataMessage}"></td>
         <td th:text="*{fromUser}"></td>
+        <td th:text="*{dataMessage}"></td>
+        <td th:text="*{themeMessage}"></td>
 
         <td>
             <a th:href="@{messages/openModal/(pid=*{pid})}" class="btn btn-outline-warning openBtn">

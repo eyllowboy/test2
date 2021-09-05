@@ -1,5 +1,6 @@
 package com.example.library.library.controller;
 
+import com.example.library.library.model.Article;
 import com.example.library.library.model.Message;
 import com.example.library.library.model.User;
 import com.example.library.library.service.ArticleService;
@@ -7,6 +8,7 @@ import com.example.library.library.service.BookService;
 import com.example.library.library.service.MessageService;
 import com.example.library.library.service.UserService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -43,7 +45,7 @@ public class NavigationController {
     }
 
     @RequestMapping(value = {"/", "/users"}, method = RequestMethod.GET)
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String users(Model model, HttpServletRequest request) {
         String userName = request.getRemoteUser();
         Optional<User> optional = userService.getUserByLogin(userName);
@@ -52,18 +54,13 @@ public class NavigationController {
 
         LocalDateTime dateVisited = LocalDateTime.now();
         user.setDataVisited(dateVisited);
-        System.out.println("????????????????????????????????????????????");
-        System.out.println(userName);
+
         userService.updateParametredUser(user);
         model.addAttribute("users", userService.getAllUsers());
         return "users/user";
     }
 
-    @GetMapping("/references")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'LIBRARIAN')")
-    public String references() {
-        return "references/references";
-    }
+
 
     @GetMapping("/articles")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -82,19 +79,49 @@ public class NavigationController {
     @GetMapping("/allarticles")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 
-    public String allArticles(Model model) {
+    public String allArticles(Model model, HttpServletRequest request) {
+        String userName = request.getRemoteUser();
+        Optional<User> optional = userService.getUserByLogin(userName);
+        User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
 
+
+        LocalDateTime dateVisited = LocalDateTime.now();
+        user.setDataVisited(dateVisited);
+
+        userService.updateParametredUser(user);
         model.addAttribute("articles", articleService.getAllArticles());
 
         return "allarticles/article";
     }
 
+    @GetMapping("/allarticles/filter")
 
 
-    @GetMapping("/index")
-    @PreAuthorize("hasAuthority('USER')")
-    public String getBooksForUser(Model model) {
-        model.addAttribute("books", bookService.getAllBooks());
-        return "index";
+    public String filterArticle(String filterText, Model model) {
+        List<Article> filterArticle;
+        try {
+            if (!StringUtils.isBlank(filterText)) {
+
+                filterArticle = articleService.filterArticle(filterText);
+
+            } else {
+                filterArticle = articleService.getAllArticles();
+            }
+            model.addAttribute("articles", filterArticle);
+            return "allarticles/article :: article_list";
+        } catch (Exception e) {
+            model.addAttribute("users", articleService.getAllArticles());
+            model.addAttribute("message", "При работе со статьями произошла ошибка");
+            model.addAttribute("alertClass", "alert-danger");
+            return "allarticles/article :: article_list";
+        }
     }
+
+
+//    @GetMapping("/index")
+//    @PreAuthorize("hasAuthority('USER')")
+//    public String getBooksForUser(Model model) {
+//        model.addAttribute("books", bookService.getAllBooks());
+//        return "index";
+//    }
 }

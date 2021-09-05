@@ -145,24 +145,24 @@ public class ArticleController {
             return "articles/article :: article_list";
         }
     }
-
-    @GetMapping("/filter")
-    public String filterArticle(String filterText, Model model) {
-        List<Article> filterArticle;
-        try {
-            if (!StringUtils.isBlank(filterText)) {
-                filterArticle = articleService.filterArticle(filterText);
-            } else {
-                filterArticle = articleService.getAllArticles();
-            }
-            model.addAttribute("articles", filterArticle);
-            return "allarticles/article :: article_list";
-        } catch (Exception e) {
-            model.addAttribute("users", articleService.getAllArticles());
-            model.addAttribute("message", "При работе со статьями произошла ошибка");
-            model.addAttribute("alertClass", "alert-danger");
-            return "allarticles/article :: article_list";
-        }
-    }
+//
+//    @GetMapping("/filter")
+//    public String filterArticle(String filterText, Model model) {
+//        List<Article> filterArticle;
+//        try {
+//            if (!StringUtils.isBlank(filterText)) {
+//                filterArticle = articleService.filterArticle(filterText);
+//            } else {
+//                filterArticle = articleService.getAllArticles();
+//            }
+//            model.addAttribute("articles", filterArticle);
+//            return "allarticles/article :: article_list";
+//        } catch (Exception e) {
+//            model.addAttribute("users", articleService.getAllArticles());
+//            model.addAttribute("message", "При работе со статьями произошла ошибка");
+//            model.addAttribute("alertClass", "alert-danger");
+//            return "allarticles/article :: article_list";
+//        }
+//    }
 
 }

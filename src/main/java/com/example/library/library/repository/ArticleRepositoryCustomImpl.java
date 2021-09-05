@@ -6,6 +6,7 @@ import com.example.library.library.model.User;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -22,11 +23,14 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
     public List<Article> filterArticle(String filterStr) {
         Session session = em.unwrap(Session.class);
         Criteria criteria = session.createCriteria(Article.class);
-        criteria.createAlias("article", "article");
+        criteria.createAlias("user", "user");
+        criteria.setFetchMode("user", FetchMode.JOIN);
 
-        LogicalExpression disjunction = Restrictions.or(
-                Restrictions.ilike("name", filterStr, MatchMode.ANYWHERE),
-                Restrictions.ilike("article.name", filterStr, MatchMode.ANYWHERE)
+        Disjunction disjunction = Restrictions.or(
+                Restrictions.ilike("user.login", filterStr, MatchMode.ANYWHERE),
+                Restrictions.ilike("text", filterStr, MatchMode.ANYWHERE),
+                Restrictions.ilike("name", filterStr, MatchMode.ANYWHERE)
+
         );
         criteria.add(disjunction);
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
