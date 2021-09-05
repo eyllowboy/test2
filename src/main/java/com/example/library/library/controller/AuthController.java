@@ -59,7 +59,7 @@ public class AuthController {
             return "login";
         } catch (Exception e) {
             model.addAttribute("users", userService.getAllUsers());
-            model.addAttribute("message", "Ошибка создания пользователя");
+            model.addAttribute("message", "Ошибка, пользователь с таким логином уже существует");
             model.addAttribute("alertClass", "alert-danger");
             return "login";
         }

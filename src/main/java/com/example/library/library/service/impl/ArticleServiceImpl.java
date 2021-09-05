@@ -4,7 +4,7 @@ import com.example.library.library.model.Article;
 import com.example.library.library.repository.ArticleRepository;
 import com.example.library.library.service.ArticleService;
 import org.hibernate.service.spi.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,5 +70,10 @@ public class ArticleServiceImpl  implements ArticleService {
     @Override
     public List<Article> summaArticles(Long pid) {
         return articleRepository.summaArticles(pid);
+    }
+
+    @Override
+    public List<Article> filterArticle(String filterText) {
+        return articleRepository.filterArticle(filterText);
     }
 }

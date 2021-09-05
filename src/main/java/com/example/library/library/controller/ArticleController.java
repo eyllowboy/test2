@@ -4,12 +4,14 @@ import com.example.library.library.model.Article;
 import com.example.library.library.model.User;
 import com.example.library.library.service.ArticleService;
 import com.example.library.library.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -78,6 +80,7 @@ public class ArticleController {
         }
     }
     @RequestMapping(value = "/image", produces = MediaType.IMAGE_PNG_VALUE)
+
     public ResponseEntity<byte[]> getImage(Long pid) throws IOException {
         Article article = articleService.getArticleById(pid);
         byte[] imageContent = null;
@@ -142,4 +145,24 @@ public class ArticleController {
             return "articles/article :: article_list";
         }
     }
+
+    @GetMapping("/filter")
+    public String filterArticle(String filterText, Model model) {
+        List<Article> filterArticle;
+        try {
+            if (!StringUtils.isBlank(filterText)) {
+                filterArticle = articleService.filterArticle(filterText);
+            } else {
+                filterArticle = articleService.getAllArticles();
+            }
+            model.addAttribute("articles", filterArticle);
+            return "allarticles/article :: article_list";
+        } catch (Exception e) {
+            model.addAttribute("users", articleService.getAllArticles());
+            model.addAttribute("message", "При работе со статьями произошла ошибка");
+            model.addAttribute("alertClass", "alert-danger");
+            return "allarticles/article :: article_list";
+        }
+    }
+
 }

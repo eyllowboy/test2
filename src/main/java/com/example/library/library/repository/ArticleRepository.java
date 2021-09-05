@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ArticleRepository extends JpaRepository<Article, Long> {
+public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
 
 
 
@@ -16,4 +16,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query("select a from Article a join fetch a.user where a.user.pid = :pid")
     List<Article> summaArticles(Long pid);
+
 }

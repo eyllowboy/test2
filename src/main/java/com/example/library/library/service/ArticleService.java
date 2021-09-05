@@ -1,6 +1,7 @@
 package com.example.library.library.service;
 
 import com.example.library.library.model.Article;
+import com.example.library.library.model.Book;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -20,4 +21,6 @@ public interface ArticleService {
     List<Article> getMyArticles(String Auth);
 
     List<Article> summaArticles(Long pid);
+
+    List<Article> filterArticle(String filterText);
 }

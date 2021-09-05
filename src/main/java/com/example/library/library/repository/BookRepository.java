@@ -14,4 +14,5 @@ public interface BookRepository extends JpaRepository<Book, Long>, BookRepositor
 
     @Query("select b from Book b join fetch b.author where b.pid = :id")
     Book findBookById(@Param("id") Long pid);
+
 }
