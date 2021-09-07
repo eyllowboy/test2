@@ -23,13 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/articles")
+@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 public class ArticleController {
 
     @Autowired
@@ -38,6 +38,20 @@ public class ArticleController {
     @Autowired
     UserService userService;
 
+    @GetMapping("")
+
+
+    public String articles(Model model, HttpServletRequest request) {
+
+        String userName = request.getRemoteUser();
+        Optional<User> optional = userService.getUserByLogin(userName);
+        User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
+
+
+        model.addAttribute("articles", articleService.getMyArticles(user.getLogin()));
+
+        return "articles/article";
+    }
     @GetMapping("/addArticle")
     public String addUser(Model model) {
         try {

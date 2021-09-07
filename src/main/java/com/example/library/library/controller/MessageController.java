@@ -1,5 +1,6 @@
 package com.example.library.library.controller;
 
+import com.example.library.library.model.Article;
 import com.example.library.library.model.Message;
 import com.example.library.library.model.User;
 import com.example.library.library.service.MessageService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/messages")
+@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 public class MessageController {
     @Autowired
     private MessageService messageService;
@@ -74,6 +76,17 @@ public class MessageController {
             model.addAttribute("message", "Ошибка удаления сообщения");
             model.addAttribute("alertClass", "alert-danger");
             return "messages/message :: message_list";
+        }
+    }
+    @GetMapping("/addMessage")
+    public String addMessage(Model model) {
+        try {
+            model.addAttribute("message", new Message());
+
+            return "messages/modal/addMessage";
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return "messages/modal/addMessage";
         }
     }
 }

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function (event) {
     eventForUserPage();
-
+    addMessageBtnEvent();
 });
 function eventForUserPage() {
     document.querySelectorAll('.table .openBtn')
@@ -48,4 +48,33 @@ function openMessageAsyncFetch(href) {
         model.show();
 
     });
+}
+function addMessageBtnEvent() {
+    document.getElementById("addBtn").addEventListener('click', function (event) {
+        event.preventDefault()
+        let href = this.getAttribute("href")
+        fetch(href).then(response => response.text()).then(fragment => {
+            document.querySelector("#addModal").innerHTML = fragment
+        }).then(() => {
+            let modal = new bootstrap.Modal(document.querySelector("#addModal"), {})
+            modal.show()
+            document.getElementById('add_message')
+                .addEventListener('submit', event => submitNewMessage(event))
+        })
+    })
+}
+async function submitNewMessage(event) {
+    event.preventDefault()
+    let formData = new FormData(event.target),
+        request = new Request(event.target.action, {// в экшене храниться урл
+            method: 'POST',
+            body: formData,
+
+        })
+    let response = await fetch(request);//в респонсе будет наш тайбл
+    let messageTable = await response.text()
+    let modal = bootstrap.Modal.getInstance(document.getElementById('addModal'))
+    modal.hide()
+    document.querySelector(".message_list").innerHTML = messageTable
+    eventForPage()
 }

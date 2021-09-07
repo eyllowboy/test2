@@ -20,7 +20,6 @@ function addArticleBtnEvent() {
 
 function eventForPage() {
 
-
     document.querySelectorAll('.card .editArticle').forEach(editBtn => editBtn.addEventListener('click', function (event) {
         event.preventDefault()
         let href = this.getAttribute("href")
@@ -84,18 +83,3 @@ async function submitEditUserForm(event) {
     document.querySelector(".article_list").innerHTML = articleTable
     eventForPage()
 }
-// //
-// const path = 'http://localhost:8081/references/books'
-//
-// async function filterBook() {
-//     let searchVal = document.getElementById('searchWord').value
-//     const param = new URLSearchParams({
-//         "s" : searchVal
-//     })
-//     fetch(path + "/filter?" + param).then(response=> response.text()).then(fragment => {
-//         document.querySelector(".book_list").innerHTML = fragment
-//         eventForPage()
-//     })
-//
-//
-// }

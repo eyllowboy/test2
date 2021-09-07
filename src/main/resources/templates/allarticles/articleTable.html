@@ -16,11 +16,15 @@
                    <div> <span>Дата создания</span>
                        <td th:text="*{dataArticle}"></td>
                    </div>
+
+                   <a  onclick="changeNow()"><img id="imgLike" src="/img/like.png"  >1</a>
+
                </div>
                 <h5 class=" mt-4 card-title" th:text="*{name}"></h5>
-
                 <p class="card-text" th:text="*{text}"></p>
-
+                <div class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{allarticles/delete/(pid=*{pid})}" class="btn btn-secondary deleteBtn">Удалить</a>
+                </div>
             </div>
         </div>
     </div>

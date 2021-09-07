@@ -8,6 +8,7 @@ import com.example.library.library.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
 
     private static final String USER_TABLE = "users/user :: user_list";
@@ -37,9 +39,11 @@ public class UserController {
 
     @Autowired
     MessageService messageService;
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
 
     @GetMapping("/addUser")
     public String addUser(Model model) {
@@ -50,6 +54,30 @@ public class UserController {
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return ADD_MODAL;
+        }
+    }
+
+    @RequestMapping(value = {}, method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMIN')")
+
+    public String users(Model model, HttpServletRequest request) {
+        try {
+            String userName = request.getRemoteUser();
+            Optional<User> optional = userService.getUserByLogin(userName);
+            User user = optional.orElseThrow(() -> new ServiceException("Warning  Error"));
+
+
+            LocalDateTime dateVisited = LocalDateTime.now();
+            user.setDataVisited(dateVisited);
+
+            userService.updateParametredUser(user);
+            model.addAttribute("users", userService.getAllUsers());
+            return "users/user";
+        } catch (Exception e) {
+            model.addAttribute("users", userService.getAllUsers());
+            model.addAttribute("message", "Ошибка пользователей");
+            model.addAttribute("alertClass", "alert-success");
+            return "users/user";
         }
     }
 
@@ -95,6 +123,7 @@ public class UserController {
             return EDIT_MODAL;
         }
     }
+
     @GetMapping("/message")
     public String messageUser(Long pid, Model model) {
 
@@ -109,6 +138,7 @@ public class UserController {
             return MESSAGE_USER;
         }
     }
+
     @PostMapping("/updateUser")
     public String updateUser(User user, Model model) {
         try {
@@ -124,6 +154,7 @@ public class UserController {
             return USER_TABLE;
         }
     }
+
     @GetMapping(value = "/info")
     public String infoUser(Long pid, Model model) {
         try {
@@ -139,7 +170,8 @@ public class UserController {
             return USER_INFO;
         }
     }
-//    @GetMapping(value = "/message")
+
+    //    @GetMapping(value = "/message")
 //    public String messageUser(Long pid, Model model) {
 //        try {
 //
@@ -188,14 +220,15 @@ public class UserController {
             return USER_TABLE;
         }
     }
+
     @PostMapping("/saveMessage")
-    public String saveMessage(@RequestParam(value="pid") Long pid,
+    public String saveMessage(@RequestParam(value = "pid") Long pid,
                               Message message, HttpServletRequest request, Model model) {
         try {
             String userName = request.getRemoteUser();
             Optional<User> optional = userService.getUserByLogin(userName);
-            User fromUser = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
-           message.setFromUser(fromUser.getLogin());
+            User fromUser = optional.orElseThrow(() -> new ServiceException("Warning  Error"));
+            message.setFromUser(fromUser.getLogin());
 
             User user = userService.getUserById(pid);
             message.setUser(user);

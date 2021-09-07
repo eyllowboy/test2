@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 public class NavigationController {
 
     private ArticleService articleService;
@@ -44,37 +45,11 @@ public class NavigationController {
         this.messageService = messageService;
     }
 
-    @RequestMapping(value = {"/", "/users"}, method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public String users(Model model, HttpServletRequest request) {
-        String userName = request.getRemoteUser();
-        Optional<User> optional = userService.getUserByLogin(userName);
-        User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
-
-
-        LocalDateTime dateVisited = LocalDateTime.now();
-        user.setDataVisited(dateVisited);
-
-        userService.updateParametredUser(user);
-        model.addAttribute("users", userService.getAllUsers());
-        return "users/user";
-    }
 
 
 
-    @GetMapping("/articles")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 
-    public String articles(Model model) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String authName = auth.getName();
-
-        model.addAttribute("articles", articleService.getMyArticles(authName));
-        //model.addAttribute("authName", authName);
-
-        return "articles/article";
-    }
 
     @GetMapping("/allarticles")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
@@ -95,8 +70,6 @@ public class NavigationController {
     }
 
     @GetMapping("/allarticles/filter")
-
-
     public String filterArticle(String filterText, Model model) {
         List<Article> filterArticle;
         try {
@@ -118,10 +91,20 @@ public class NavigationController {
     }
 
 
-//    @GetMapping("/index")
-//    @PreAuthorize("hasAuthority('USER')")
-//    public String getBooksForUser(Model model) {
-//        model.addAttribute("books", bookService.getAllBooks());
-//        return "index";
-//    }
+    @RequestMapping(value = "/allarticles/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
+    public String deleteArticle(Long pid, Model model) {
+
+        try {
+            articleService.deleteArticleById(pid);
+            model.addAttribute("articles", articleService.getAllArticles());
+            model.addAttribute("message", "Статья успешно удален");
+            model.addAttribute("alertClass", "alert-success");
+            return "allarticles/article :: article_list";
+        } catch (Exception e) {
+            model.addAttribute("articles", articleService.getAllArticles());
+            model.addAttribute("message", "Ошибка удаления статьи");
+            model.addAttribute("alertClass", "alert-danger");
+            return "allarticles/article :: article_list";
+        }
+    }
 }
