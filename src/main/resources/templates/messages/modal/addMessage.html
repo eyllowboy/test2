@@ -3,27 +3,27 @@
 <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="addModalLabel">Создание статьи</h5>
+            <h5 class="modal-title" id="addModalLabel">Написать письмо</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <div class="custom-alert"></div>
-            <form th:action="@{/articles/saveArticle}" th:object="${article}" method="post" id="add_message" >
+            <form th:action="@{/messages/saveMessage}" th:object="${message}" method="post" id="add_message" >
 
+                <div class="mb-3">
+                    <label for="loginUser" class="col-form-label">Логин пользователя:</label>
+                    <input type="text" class="form-control" id="loginUser" name="loginUser" required>
+                </div>
 
 
                 <div class="mb-3">
-                    <label for="formFile" class="form-label">Обложка</label>
-                    <input class="form-control" type="file" id="formFile" name="maintenanceFile">
+                    <label for="themeMessage" class="col-form-label">Тема сообщения:</label>
+                    <input type="text" class="form-control" id="themeMessage" name="themeMessage" required>
                 </div>
                 <div class="mb-3">
-                    <label for="name" class="col-form-label">Название статьи:</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <div class="mb-3">
 
-                    <label for="text">Текст статьи:</label>
-                    <textarea class="form-control" id="text" rows="7" name="text" required></textarea>
+                    <label for="textMessage">Текст сообщения:</label>
+                    <textarea class="form-control" id="textMessage" rows="7" name="textMessage" required></textarea>
                 </div>
 
 
@@ -32,7 +32,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                     </button>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
                 </div>
             </form>
         </div>
