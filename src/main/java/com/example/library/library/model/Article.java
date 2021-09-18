@@ -31,6 +31,8 @@ public class Article {
     @JoinColumn(name = "user_name", referencedColumnName = "pid")
     private User user;
 
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
     @Lob
     private byte[] cover;
@@ -78,9 +80,23 @@ public class Article {
         this.user = user;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @Transient
     public String getAuthorStr() {
         return user.getLogin();
+    }
+
+    @Transient
+    public List<String> ComText() {
+        return comments.stream().map(Comment::getCommentText).collect(Collectors.toList());
+
     }
 
     public LocalDate getDataArticle() {

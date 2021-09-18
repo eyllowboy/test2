@@ -3,31 +3,54 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
+<div class="d-flex justify-content-center   container " th:each="article : ${articles}" th:object="${article}">
+    <div class="card mt-4" style="width: 38rem;">
+        <td style="display: none">
+            <div class="visually-hidden" id="pid" th:text="*{pid}"></div>
+        </td>
+        <img th:src="@{articles/image(pid=${article.pid})}" class="card-img-top" alt="...">
 
-    <div class="d-flex justify-content-center   container " th:each="article : ${articles}" th:object="${article}">
-        <div class="card mt-4" style="width: 38rem;">
-
-            <img th:src="@{articles/image(pid=${article.pid})}" class="card-img-top" alt="...">
-
-            <div class="card-body">
-               <div>
-                   <span>Автор</span>
-                   <span th:text="*{authorStr}"></span>
-                   <div> <span>Дата создания</span>
-                       <td th:text="*{dataArticle}"></td>
-                   </div>
-
-                   <a  onclick="changeNow()"><img id="imgLike" src="/img/like.png"  >1</a>
-
-               </div>
-                <h5 class=" mt-4 card-title" th:text="*{name}"></h5>
-                <p class="card-text" th:text="*{text}"></p>
-                <div class="nav-item" sec:authorize="hasAuthority('ADMIN')">
-                <a th:href="@{allarticles/delete/(pid=*{pid})}" class="btn btn-secondary deleteBtn">Удалить</a>
+        <div class="card-body">
+            <div>
+                <span>Автор</span>
+                <span th:text="*{authorStr}"></span>
+                <div><span>Дата создания</span>
+                    <td th:text="*{dataArticle}"></td>
                 </div>
+
+                <a onclick="changeNow()"><img id="imgLike" src="/img/like.png">1</a>
+
+            </div>
+            <h5 class=" mt-4 card-title" th:text="*{name}"></h5>
+            <p class="card-text" th:text="*{text}"></p>
+            <div class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                <a th:href="@{allarticles/delete/(pid=*{pid})}" class="btn btn-danger deleteBtn">Удалить</a>
+
+            </div>
+            <br>
+            <div>
+                <a class="btn btn btn-primary btnKoment">Комментарии</a>
+                <a th:href="@{allarticles/comment/(pid=*{pid})}" class="btn btn btn-secondary Koment ">Написать комментарий</a>
+            </div>
+
+            <div class="visually-hidden Komment" id="Komment">
+                <div   th:each="a: ${article.ComText}" >
+                    <p class="border box" th:text="${a}"></p>
+                </div>
+
+
+
             </div>
         </div>
+
+
     </div>
+</div>
+
 
 
 </html>
+
+
+
+

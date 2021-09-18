@@ -126,7 +126,8 @@ public class UserController {
 
     @GetMapping("/message")
     public String messageUser(Long pid, Model model) {
-
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(pid);
         try {
             User user = userService.getUserById(pid);
 
@@ -157,6 +158,7 @@ public class UserController {
 
     @GetMapping(value = "/info")
     public String infoUser(Long pid, Model model) {
+
         try {
 
             model.addAttribute("user", userService.getUserById(pid));
@@ -171,21 +173,7 @@ public class UserController {
         }
     }
 
-    //    @GetMapping(value = "/message")
-//    public String messageUser(Long pid, Model model) {
-//        try {
-//
-//            model.addAttribute("user", userService.getUserById(pid));
-//            model.addAttribute("countArticles", articleService.summaArticles(pid).size());
-//
-//
-//            return MESSAGE_USER;
-//        } catch (Exception e) {
-//            System.err.println(e.getMessage());
-//
-//            return MESSAGE_USER;
-//        }
-//    }
+
     @RequestMapping(value = "/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
     public String deleteUser(Long pid, Model model) {
         try {
@@ -225,12 +213,14 @@ public class UserController {
     public String saveMessage(@RequestParam(value = "pid") Long pid,
                               Message message, HttpServletRequest request, Model model) {
         try {
+
             String userName = request.getRemoteUser();
             Optional<User> optional = userService.getUserByLogin(userName);
             User fromUser = optional.orElseThrow(() -> new ServiceException("Warning  Error"));
             message.setFromUser(fromUser.getLogin());
 
             User user = userService.getUserById(pid);
+
             message.setUser(user);
             LocalDateTime dataMessage = LocalDateTime.now();
             message.setDataMessage(dataMessage);

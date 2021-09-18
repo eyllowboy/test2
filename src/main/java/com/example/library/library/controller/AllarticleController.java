@@ -1,12 +1,10 @@
 package com.example.library.library.controller;
 
 import com.example.library.library.model.Article;
+import com.example.library.library.model.Comment;
 import com.example.library.library.model.Message;
 import com.example.library.library.model.User;
-import com.example.library.library.service.ArticleService;
-import com.example.library.library.service.BookService;
-import com.example.library.library.service.MessageService;
-import com.example.library.library.service.UserService;
+import com.example.library.library.service.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.service.spi.ServiceException;
@@ -15,9 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -27,7 +23,7 @@ import java.util.Optional;
 
 @Controller
 @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-public class NavigationController {
+public class AllarticleController {
 
     private ArticleService articleService;
 
@@ -37,12 +33,15 @@ public class NavigationController {
 
     private MessageService messageService;
 
-    public NavigationController(UserService userService, BookService bookService, ArticleService articleService,
-                                MessageService messageService) {
+    private CommentService commentService;
+
+    public AllarticleController(UserService userService, BookService bookService, ArticleService articleService,
+                                MessageService messageService, CommentService commentService) {
         this.userService = userService;
         this.bookService = bookService;
         this.articleService = articleService;
         this.messageService = messageService;
+        this.commentService =commentService;
     }
 
 
@@ -105,6 +104,42 @@ public class NavigationController {
             model.addAttribute("message", "Ошибка удаления статьи");
             model.addAttribute("alertClass", "alert-danger");
             return "allarticles/article :: article_list";
+        }
+    }
+    @GetMapping("/allarticles/comment")
+    public String commentUser(Long pid, Model model) {
+
+        try {
+            Article article = articleService.getArticleById(pid);
+
+            model.addAttribute("article", article);
+
+            return "allarticles/modal/commentArticle";
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return "allarticles/modal/commentArticle";
+        }
+    }
+    @PostMapping("/allarticles/saveComment")
+    public String saveComment(@RequestParam(value = "pid") Long pid,
+                               HttpServletRequest request,Comment comment, Model model) {
+        try {
+
+            Article  article = articleService.getArticleById(pid);
+             comment.setArticle(article);
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println(comment.getCommentText());
+            commentService.createNewComment(comment);
+
+            model.addAttribute("articles", articleService.getAllArticles());
+            model.addAttribute("message", "Комментарий успешно отправлен");
+            model.addAttribute("alertClass", "alert-success");
+            return "allarticles/article:: article_list";
+        } catch (Exception e) {
+            model.addAttribute("articles", articleService.getAllArticles());
+            model.addAttribute("message", "Ошибка добавления комментария");
+            model.addAttribute("alertClass", "alert-danger");
+            return "allarticles/article:: article_list";
         }
     }
 }
