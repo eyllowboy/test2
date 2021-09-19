@@ -23,4 +23,7 @@ public interface ArticleService {
     List<Article> summaArticles(Long pid);
 
     List<Article> filterArticle(String filterText);
+
+    List<Article> allArticlesToday();
+
 }

@@ -76,5 +76,5 @@ async function submitNewMessage(event) {
     let modal = bootstrap.Modal.getInstance(document.getElementById('addModal'))
     modal.hide()
     document.querySelector(".message_list").innerHTML = messageTable
-    eventForPage()
+    eventForUserPage();
 }

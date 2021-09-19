@@ -41,13 +41,8 @@ public class AllarticleController {
         this.bookService = bookService;
         this.articleService = articleService;
         this.messageService = messageService;
-        this.commentService =commentService;
+        this.commentService = commentService;
     }
-
-
-
-
-
 
 
     @GetMapping("/allarticles")
@@ -56,7 +51,7 @@ public class AllarticleController {
     public String allArticles(Model model, HttpServletRequest request) {
         String userName = request.getRemoteUser();
         Optional<User> optional = userService.getUserByLogin(userName);
-        User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
+        User user = optional.orElseThrow(() -> new ServiceException("Warning  Error"));
 
 
         LocalDateTime dateVisited = LocalDateTime.now();
@@ -82,7 +77,22 @@ public class AllarticleController {
             model.addAttribute("articles", filterArticle);
             return "allarticles/article :: article_list";
         } catch (Exception e) {
-            model.addAttribute("users", articleService.getAllArticles());
+            model.addAttribute("articles", articleService.getAllArticles());
+            model.addAttribute("message", "При работе со статьями произошла ошибка");
+            model.addAttribute("alertClass", "alert-danger");
+            return "allarticles/article :: article_list";
+        }
+    }
+
+    @GetMapping("/allarticles/today")
+    public String filterArticle(Model model) {
+        List<Article> allArticles;
+        try {
+            allArticles = articleService.allArticlesToday();
+            model.addAttribute("articles", allArticles);
+            return "allarticles/article :: article_list";
+        } catch (Exception e) {
+            model.addAttribute("articles", articleService.getAllArticles());
             model.addAttribute("message", "При работе со статьями произошла ошибка");
             model.addAttribute("alertClass", "alert-danger");
             return "allarticles/article :: article_list";
@@ -106,6 +116,7 @@ public class AllarticleController {
             return "allarticles/article :: article_list";
         }
     }
+
     @GetMapping("/allarticles/comment")
     public String commentUser(Long pid, Model model) {
 
@@ -120,15 +131,19 @@ public class AllarticleController {
             return "allarticles/modal/commentArticle";
         }
     }
-    @PostMapping("/allarticles/saveComment")
-    public String saveComment(@RequestParam(value = "pid") Long pid,
-                               HttpServletRequest request,Comment comment, Model model) {
-        try {
 
-            Article  article = articleService.getArticleById(pid);
-             comment.setArticle(article);
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println(comment.getCommentText());
+    @PostMapping("/allarticles/saveComment")
+    public String saveComment(@RequestParam(value = "pid") Long pid, @RequestParam(value = "CommentText") String CommentText,
+                              HttpServletRequest request, Model model) {
+        try {
+            Comment comment = new Comment();
+            comment.setCommentText(CommentText);
+            Article article = articleService.getArticleById(pid);
+            comment.setArticle(article);
+//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            System.out.println(pid);
+//            System.out.println(comment.getPid());
+//            System.out.println(comment.getCommentText());
             commentService.createNewComment(comment);
 
             model.addAttribute("articles", articleService.getAllArticles());

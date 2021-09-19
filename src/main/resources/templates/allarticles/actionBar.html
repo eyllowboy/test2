@@ -2,7 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div class="btn-toolbar justify-content-between" role="toolbar">
+    <div class="btn-group mb-3 mt-3" role="group">
+        <a   class="btn btn-outline-success" id="Btntoday" onclick="AllArticlesToday()">
+            Статьи за сегодня
+        </a>
 
+    </div>
     <div class="input-group mb-4 w-50 ms-auto">
         <input type="text" id="search_table" class="form-control" aria-label="Search" aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="button" onclick="searchOnArticle()">Поиск</button>

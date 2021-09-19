@@ -6,7 +6,7 @@
 <div class="d-flex justify-content-center   container " th:each="article : ${articles}" th:object="${article}">
     <div class="card mt-4" style="width: 38rem;">
         <td style="display: none">
-            <div class="visually-hidden" id="pid" th:text="*{pid}"></div>
+
         </td>
         <img th:src="@{articles/image(pid=${article.pid})}" class="card-img-top" alt="...">
 
@@ -30,10 +30,10 @@
             <br>
             <div>
                 <a class="btn btn btn-primary btnKoment">Комментарии</a>
-                <a th:href="@{allarticles/comment/(pid=*{pid})}" class="btn btn btn-secondary Koment ">Написать комментарий</a>
+                <a th:href="@{allarticles/comment/(pid=*{pid})}" class="btn btn btn-secondary addKoment ">Написать комментарий</a>
             </div>
 
-            <div class="visually-hidden Komment" id="Komment">
+            <div class="visually-hidden  Komment" id=" Komment">
                 <div   th:each="a: ${article.ComText}" >
                     <p class="border box" th:text="${a}"></p>
                 </div>

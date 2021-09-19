@@ -63,7 +63,6 @@ public class MessageController {
             User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
 
             model.addAttribute("messages", messageService.getMessages(user));
-
             model.addAttribute("message", "Сообщение успешно удалено");
             model.addAttribute("alertClass", "alert-success");
             return "messages/message :: message_list";
@@ -114,7 +113,9 @@ public class MessageController {
         }catch (ServiceException e) {
             String userName = request.getRemoteUser();
             Optional<User> optional = userService.getUserByLogin(userName);
+            System.out.println("111111111111111111111111111111111111111111111111111111");
             User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
+            System.out.println("2222222222222222222222222222222222222222222222222222222");
             model.addAttribute("messages", messageService.getMessages(user));
             model.addAttribute("message", "Пользователь с таким логином не найден");
             model.addAttribute("alertClass", "alert-danger");

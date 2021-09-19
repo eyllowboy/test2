@@ -126,8 +126,7 @@ public class UserController {
 
     @GetMapping("/message")
     public String messageUser(Long pid, Model model) {
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println(pid);
+
         try {
             User user = userService.getUserById(pid);
 
