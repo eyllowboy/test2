@@ -9,21 +9,27 @@ function searchOnArticle() {
     });
     fetch("allarticles/filter?" + param).then(response => response.text()).then(fragment => {
                     document.querySelector(".article_list").innerHTML = fragment
-            eventForUserPage()
+            eventForPage()
         }
     )
 }
 
 function eventForPage() {
-    document.body.addEventListener("click", (e) => {
-        const button = e.target.closest(".btnKoment");
-        if (button) {
-            const hidden = button.closest(".card").querySelector(".Komment");
-            hidden.classList.toggle("visually-hidden");
-        }
+    // document.body.addEventListener("click", (e) => {
+    //     const button = e.target.closest(".btnKoment");
+    //     if (button) {
+    //         const hidden = button.closest(".card").querySelector(".Komment");
+    //         hidden.classList.toggle("visually-hidden");
+    //     }
+    //
+    // })
+    const buttons= document.querySelectorAll('.btnKoment');
+    buttons.forEach(button=>{button.addEventListener('click',function (event) {
+        const currentB=event.currentTarget;
+        const hidden =currentB.closest(".card").querySelector(".Komment");
+        hidden.classList.toggle("visually-hidden");
 
-    })
-
+    })})
 
 
     document.querySelectorAll('.card .deleteBtn').forEach(deleteBtn => deleteBtn.addEventListener('click', function (event) {
@@ -42,7 +48,7 @@ function eventForPage() {
                 })
             })
     }))
-    document.querySelectorAll('.card .Koment')
+    document.querySelectorAll('.card .addKoment')
         .forEach(Koment => messageEvent(Koment));
 }
 
