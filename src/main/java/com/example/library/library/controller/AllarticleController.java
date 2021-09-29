@@ -29,16 +29,16 @@ public class AllarticleController {
 
     private UserService userService;
 
-    private BookService bookService;
+
 
     private MessageService messageService;
 
     private CommentService commentService;
 
-    public AllarticleController(UserService userService, BookService bookService, ArticleService articleService,
+    public AllarticleController(UserService userService,   ArticleService articleService,
                                 MessageService messageService, CommentService commentService) {
         this.userService = userService;
-        this.bookService = bookService;
+
         this.articleService = articleService;
         this.messageService = messageService;
         this.commentService = commentService;

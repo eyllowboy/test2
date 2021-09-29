@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function (event) {
     eventForPage();
-    changeNow();
+
 });
 function searchOnArticle() {
     let searchText = document.querySelector("#search_table").value.trim();
@@ -13,7 +13,13 @@ function searchOnArticle() {
         }
     )
 }
-
+function AllArticlesToday(){
+    fetch("allarticles/today").then(response => response.text()).then(fragment => {
+            document.querySelector(".article_list").innerHTML = fragment
+            eventForUserPage()
+        }
+    )
+}
 function eventForPage() {
     // document.body.addEventListener("click", (e) => {
     //     const button = e.target.closest(".btnKoment");
@@ -88,8 +94,10 @@ async function submitMessageUserForm(event) {
     eventForPage();
 }
 
-function changeNow() {
-    var img = document.getElementById("imgLike");
+function changeNow( pid) {
+    console.log(pid)
+    var img = document.querySelector(`.like_${pid}`);
+    console.log(img)
     if (img.getAttribute("src") === "/img/like.png") {
         img.setAttribute("src", "/img/like1.png");
     } else {

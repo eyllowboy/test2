@@ -18,7 +18,7 @@
                     <td th:text="*{dataArticle}"></td>
                 </div>
 
-                <a onclick="changeNow()"><img id="imgLike" src="/img/like.png">1</a>
+                <a   th:onclick="changeNow( [[*{pid}]] )" ><img id="imgLike" class="like_*{pid}"    src="/img/like.png">1</a>
 
             </div>
             <h5 class=" mt-4 card-title" th:text="*{name}"></h5>
