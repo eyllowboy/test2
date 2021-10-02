@@ -29,8 +29,6 @@ public class AllarticleController {
 
     private UserService userService;
 
-
-
     private MessageService messageService;
 
     private CommentService commentService;
@@ -101,9 +99,29 @@ public class AllarticleController {
 
 
     @RequestMapping(value = "/allarticles/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-    public String deleteArticle(Long pid, Model model) {
+    public String deleteArticle(Long pid,HttpServletRequest request, Model model) {
 
         try {
+            String userName = request.getRemoteUser();
+            Optional<User> optional = userService.getUserByLogin(userName);
+            User fromUser = optional.orElseThrow(() -> new ServiceException("Warning  Error"));
+            Message message = new Message();
+            message.setFromUser(fromUser.getLogin());
+            Article  article = articleService.getArticleById(pid);
+            User user =article.getUser();
+
+
+            message.setUser(user);
+            message.setThemeMessage("Удаление вашей статьи");
+            message.setTextMessage("Ваша статьи " +article.getName()+" была удалена пользователем "+user.getLogin());
+
+            LocalDateTime dataMessage = LocalDateTime.now();
+            message.setDataMessage(dataMessage);
+            messageService.createNewMessage(message);
+
+
+
+
             articleService.deleteArticleById(pid);
             model.addAttribute("articles", articleService.getAllArticles());
             model.addAttribute("message", "Статья успешно удален");
@@ -140,10 +158,7 @@ public class AllarticleController {
             comment.setCommentText(CommentText);
             Article article = articleService.getArticleById(pid);
             comment.setArticle(article);
-//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//            System.out.println(pid);
-//            System.out.println(comment.getPid());
-//            System.out.println(comment.getCommentText());
+
             commentService.createNewComment(comment);
 
             model.addAttribute("articles", articleService.getAllArticles());

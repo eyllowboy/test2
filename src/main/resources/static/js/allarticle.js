@@ -21,14 +21,7 @@ function AllArticlesToday(){
     )
 }
 function eventForPage() {
-    // document.body.addEventListener("click", (e) => {
-    //     const button = e.target.closest(".btnKoment");
-    //     if (button) {
-    //         const hidden = button.closest(".card").querySelector(".Komment");
-    //         hidden.classList.toggle("visually-hidden");
-    //     }
-    //
-    // })
+
     const buttons= document.querySelectorAll('.btnKoment');
     buttons.forEach(button=>{button.addEventListener('click',function (event) {
         const currentB=event.currentTarget;
@@ -36,7 +29,17 @@ function eventForPage() {
         hidden.classList.toggle("visually-hidden");
 
     })})
-
+    // const butlike= document.querySelectorAll('.Imglikes');
+    // butlike.forEach(button=>{button.addEventListener('click',function (event) {
+    //     const currentB=event.currentTarget;
+    //     const like =currentB.closest(".mylike").querySelector(".like_");
+    //     if (like.getAttribute("src") === "/img/like.jpg") {
+    //         like.setAttribute("src", "/img/like1.jpg");
+    //     } else {
+    //         like.setAttribute("src", "/img/like.jpg");
+    //     }
+    //
+    // })})
 
     document.querySelectorAll('.card .deleteBtn').forEach(deleteBtn => deleteBtn.addEventListener('click', function (event) {
         event.preventDefault()
@@ -98,10 +101,10 @@ function changeNow( pid) {
     console.log(pid)
     var img = document.querySelector(`.like_${pid}`);
     console.log(img)
-    if (img.getAttribute("src") === "/img/like.png") {
-        img.setAttribute("src", "/img/like1.png");
+    if (img.getAttribute("src") === "/img/like.jpg") {
+        img.setAttribute("src", "/img/like1.jpg");
     } else {
-        img.setAttribute("src", "/img/like.png");
+        img.setAttribute("src", "/img/like.jpg");
     }
 }
 
