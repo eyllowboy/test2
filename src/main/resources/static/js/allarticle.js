@@ -16,7 +16,7 @@ function searchOnArticle() {
 function AllArticlesToday(){
     fetch("allarticles/today").then(response => response.text()).then(fragment => {
             document.querySelector(".article_list").innerHTML = fragment
-            eventForUserPage()
+            eventForPage()
         }
     )
 }
@@ -99,13 +99,39 @@ async function submitMessageUserForm(event) {
 
 function changeNow( pid) {
     console.log(pid)
-    var img = document.querySelector(`.like_${pid}`);
+    let img = document.getElementById("like_"+pid).firstElementChild;
     console.log(img)
+    console.log(img.getAttribute("src"))
     if (img.getAttribute("src") === "/img/like.jpg") {
         img.setAttribute("src", "/img/like1.jpg");
+        let param = {
+            pid : pid
+        }
+        console.log('+')
+        let url = new URL("http://localhost:8060/allarticles/like")
+        url.search = new URLSearchParams(param).toString()
+        fetch(url).then(response => response.text()).then(fragment => {
+                document.querySelector(".article_list").innerHTML = fragment
+                eventForPage()
+            }
+        )
+
     } else {
         img.setAttribute("src", "/img/like.jpg");
+        let param = {
+            pid : pid
+        }
+        console.log('-')
+        let url = new URL("http://localhost:8060/allarticles/dislike")
+        url.search = new URLSearchParams(param).toString()
+        fetch(url).then(response => response.text()).then(fragment => {
+                document.querySelector(".article_list").innerHTML = fragment
+                eventForPage()
+            }
+        )
     }
+
+
 }
 
 

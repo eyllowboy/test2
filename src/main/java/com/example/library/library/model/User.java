@@ -55,7 +55,8 @@ public class User {
     @Column(name = "dataVisited")
     private LocalDateTime dataVisited;
 
-
+    @ManyToMany(mappedBy = "userLike", fetch = FetchType.LAZY)
+    private List<Article> articlesLike = new ArrayList<>();
 
     public LocalDateTime getDataVisited() {
         return dataVisited;
@@ -143,6 +144,22 @@ public class User {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
+
+    public List<Article> getArticlesLike() {
+        return articlesLike;
+    }
+
+    public void setArticlesLike(List<Article> articlesLike) {
+        this.articlesLike = articlesLike;
     }
 
     @Transient

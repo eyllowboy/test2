@@ -10,9 +10,14 @@ public class Comment {
     @Column(nullable = false, length = 2000)
     private String CommentText;
 
+//    @Column(nullable = false, length = 2000)
+//    private String CommentAuthor;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_pid", referencedColumnName = "pid")
     private Article article;
+
+
 
     public Comment() {
     }

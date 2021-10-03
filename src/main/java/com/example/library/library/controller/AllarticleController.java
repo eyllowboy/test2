@@ -33,7 +33,7 @@ public class AllarticleController {
 
     private CommentService commentService;
 
-    public AllarticleController(UserService userService,   ArticleService articleService,
+    public AllarticleController(UserService userService, ArticleService articleService,
                                 MessageService messageService, CommentService commentService) {
         this.userService = userService;
 
@@ -47,18 +47,37 @@ public class AllarticleController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
 
     public String allArticles(Model model, HttpServletRequest request) {
-        String userName = request.getRemoteUser();
-        Optional<User> optional = userService.getUserByLogin(userName);
-        User user = optional.orElseThrow(() -> new ServiceException("Warning  Error"));
+        try {
+            String userName = request.getRemoteUser();
+            Optional<User> optional = userService.getUserByLogin(userName);
+            User user = optional.orElseThrow(() -> new ServiceException("Warning  Error"));
 
 
-        LocalDateTime dateVisited = LocalDateTime.now();
-        user.setDataVisited(dateVisited);
+            LocalDateTime dateVisited = LocalDateTime.now();
+            user.setDataVisited(dateVisited);
 
-        userService.updateParametredUser(user);
-        model.addAttribute("articles", articleService.getAllArticles());
+            userService.updateParametredUser(user);
 
-        return "allarticles/article";
+            List<Article> list =articleService.getAllArticles();
+            for(Article article1: list){
+                if(article1.getUserLike().contains(user)){
+                    article1.setLiked(true);
+                    articleService.updateArticle(article1);
+                }
+                else {article1.setLiked(false);
+                    articleService.updateArticle(article1);
+                }
+            }
+
+            model.addAttribute("articles", articleService.getAllArticles());
+
+            return "allarticles/article";
+        }catch (Exception e){
+
+            model.addAttribute("articles", articleService.getAllArticles());
+
+            return "allarticles/article";
+        }
     }
 
     @GetMapping("/allarticles/filter")
@@ -99,27 +118,25 @@ public class AllarticleController {
 
 
     @RequestMapping(value = "/allarticles/delete", method = {RequestMethod.DELETE, RequestMethod.GET})
-    public String deleteArticle(Long pid,HttpServletRequest request, Model model) {
+    public String deleteArticle(Long pid, HttpServletRequest request, Model model) {
 
         try {
             String userName = request.getRemoteUser();
             Optional<User> optional = userService.getUserByLogin(userName);
-            User fromUser = optional.orElseThrow(() -> new ServiceException("Warning  Error"));
+            User fromUser = optional.orElseThrow(() -> new ServiceException("Warning  Error not found user"));
             Message message = new Message();
             message.setFromUser(fromUser.getLogin());
-            Article  article = articleService.getArticleById(pid);
-            User user =article.getUser();
+            Article article = articleService.getArticleById(pid);
+            User user = article.getUser();
 
 
             message.setUser(user);
             message.setThemeMessage("Удаление вашей статьи");
-            message.setTextMessage("Ваша статьи " +article.getName()+" была удалена пользователем "+user.getLogin());
+            message.setTextMessage("Ваша статьи " + article.getName() + " была удалена администратором " + user.getLogin());
 
             LocalDateTime dataMessage = LocalDateTime.now();
             message.setDataMessage(dataMessage);
             messageService.createNewMessage(message);
-
-
 
 
             articleService.deleteArticleById(pid);
@@ -170,6 +187,74 @@ public class AllarticleController {
             model.addAttribute("message", "Ошибка добавления комментария");
             model.addAttribute("alertClass", "alert-danger");
             return "allarticles/article:: article_list";
+        }
+    }
+
+    @GetMapping("/allarticles/like")
+    public String UserLike(@RequestParam(value = "pid")Long pid, Model model, HttpServletRequest request) {
+
+
+        try {
+            String userName = request.getRemoteUser();
+            Optional<User> optional = userService.getUserByLogin(userName);
+            User user = optional.orElseThrow(() -> new ServiceException("Warning  Error not found user"));
+            Article article = articleService.getArticleById(pid);
+            List<User> userList = article.getUserLike();
+            userList.add(user);
+            article.setUserLike(userList);
+            articleService.updateArticle(article);
+
+            List<Article> list =articleService.getAllArticles();
+            for(Article article1: list){
+                if(article1.getUserLike().contains(user)){
+                    article1.setLiked(true);
+                    articleService.updateArticle(article1);
+                }
+                else {article1.setLiked(false);
+                    articleService.updateArticle(article1);
+                }
+            }
+            model.addAttribute("articles",articleService.getAllArticles());
+
+            return "allarticles/article :: article_list";
+        } catch (Exception e) {
+            model.addAttribute("articles", articleService.getAllArticles());
+
+            return "allarticles/article :: article_list";
+        }
+    }
+
+    @GetMapping("/allarticles/dislike")
+    public String UserdisLike(@RequestParam(value = "pid")Long pid, Model model, HttpServletRequest request) {
+
+
+        try {
+            String userName = request.getRemoteUser();
+            Optional<User> optional = userService.getUserByLogin(userName);
+            User user = optional.orElseThrow(() -> new ServiceException("Warning  Error not found user"));
+            Article article = articleService.getArticleById(pid);
+            List<User> userList = article.getUserLike();
+            userList.remove(user);
+            article.setUserLike(userList);
+            articleService.updateArticle(article);
+
+            List<Article> list =articleService.getAllArticles();
+            for(Article article1: list){
+                if(article1.getUserLike().contains(user)){
+                    article1.setLiked(true);
+                    articleService.updateArticle(article1);
+                }
+                else {article1.setLiked(false);
+                    articleService.updateArticle(article1);
+                }
+            }
+            model.addAttribute("articles",articleService.getAllArticles());
+
+            return "allarticles/article :: article_list";
+        } catch (Exception e) {
+            model.addAttribute("articles", articleService.getAllArticles());
+
+            return "allarticles/article :: article_list";
         }
     }
 }

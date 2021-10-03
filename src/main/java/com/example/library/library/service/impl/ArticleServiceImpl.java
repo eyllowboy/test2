@@ -85,4 +85,9 @@ public class ArticleServiceImpl  implements ArticleService {
         LocalDate localDate = LocalDate.now();
         return articleRepository.allArticlesToday(localDate);
     }
+
+    @Override
+    public Article updateArticle(Article article) {
+        return articleRepository.save(article);
+    }
 }

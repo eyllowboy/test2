@@ -18,9 +18,16 @@
                     <td th:text="*{dataArticle}"></td>
                 </div>
                 <div class="mylike">
-                <a  class="Imglike" th:onclick="changeNow( [[*{pid}]] )" ><img id="imgLike" class="like_*{pid}"    src="/img/like.jpg">1</a>
-<!--                <a  class="Imglikes"   ><img id="imgLike" class="like_"    src="/img/like.jpg">1</a>-->
+                    <a   th:onclick="changeNow( [[*{pid}]] )" >
+                        <span th:if="*{isLiked}" th:id="${'like_'+article.pid}"><img id="imgLike" th:class="like_"    src="/img/like1.jpg"></span>
+                        <span th:unless="*{isLiked}" th:id="${'like_'+article.pid}"><img id="imgLike" th:class="like_"    src="/img/like.jpg"></span>
+
+                        <span th:text="*{allNumberLikes}"></span>
+
+                    </a>
+
                 </div>
+
             </div>
             <h5 class=" mt-4 card-title" th:text="*{name}"></h5>
             <p class="card-text" th:text="*{text}"></p>
@@ -34,11 +41,11 @@
                 <a th:href="@{allarticles/comment/(pid=*{pid})}" class="btn btn btn-secondary addKoment ">Написать комментарий</a>
             </div>
 
-            <div class="visually-hidden  Komment" id=" Komment">
-                <div   th:each="a: ${article.ComText}" >
+            <div class="visually-hidden  Komment" id="Komment">
+
+                <div   th:each="a: ${article.ComText}">
                     <p class="border-bottom box lead" th:text="${a}"></p>
                 </div>
-
 
 
             </div>

@@ -22,6 +22,10 @@ public class Article {
     @Column(nullable = false, length = 2000)
     private String text;
 
+    @Column(  length = 2000, columnDefinition = "false")
+    private boolean isLiked =false;
+
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dataArticle")
@@ -33,6 +37,10 @@ public class Article {
 
     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
     private List<Comment> comments;
+
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name = "user_likes")
+    private List<User> userLike = new ArrayList<>();
 
     @Lob
     private byte[] cover;
@@ -98,6 +106,25 @@ public class Article {
         return comments.stream().map(Comment::getCommentText).collect(Collectors.toList());
 
     }
+    @Transient
+    public int allNumberLikes() {
+        return userLike.size();
+
+    }
+    @Transient
+    public Boolean ArticleIsLiked(User user) {
+        return userLike.contains(user);
+
+    }
+
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
 
     public LocalDate getDataArticle() {
         return dataArticle;
@@ -105,5 +132,13 @@ public class Article {
 
     public void setDataArticle(LocalDate dataArticle) {
         this.dataArticle = dataArticle;
+    }
+
+    public List<User> getUserLike() {
+        return userLike;
+    }
+
+    public void setUserLike(List<User> userLike) {
+        this.userLike = userLike;
     }
 }
