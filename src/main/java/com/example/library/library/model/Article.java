@@ -23,7 +23,7 @@ public class Article {
     private String text;
 
     @Column(  length = 2000, columnDefinition = "false")
-    private boolean isLiked =false;
+    private boolean isLiked;
 
 
 

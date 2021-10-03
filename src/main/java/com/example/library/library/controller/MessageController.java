@@ -106,16 +106,16 @@ public class MessageController {
 
             messageService.createNewMessage(message);
 
-            model.addAttribute("messages", messageService.getMessages(user));
+            model.addAttribute("messages", messageService.getMessages(fromUser));
             model.addAttribute("message", "Сообщение успешно доставлено");
             model.addAttribute("alertClass", "alert-success");
             return "messages/message :: message_list";
         }catch (ServiceException e) {
             String userName = request.getRemoteUser();
             Optional<User> optional = userService.getUserByLogin(userName);
-            System.out.println("111111111111111111111111111111111111111111111111111111");
+
             User user = optional.orElseThrow(()-> new ServiceException("Warning  Error"));
-            System.out.println("2222222222222222222222222222222222222222222222222222222");
+
             model.addAttribute("messages", messageService.getMessages(user));
             model.addAttribute("message", "Пользователь с таким логином не найден");
             model.addAttribute("alertClass", "alert-danger");
